@@ -1,0 +1,58 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright (c) 2026 Rockchip Electronics Co., Ltd.
+ */
+
+/ {
+	gpu_panfrost_opp_table: gpu-panfrost-opp-table {
+		compatible = "operating-points-v2";
+
+		opp-200000000 {
+			opp-hz = /bits/ 64 <200000000>;
+			opp-microvolt = <915000 915000 1000000>;
+			clock-latency-ns = <40000>;
+		};
+
+		opp-300000000 {
+			opp-hz = /bits/ 64 <300000000>;
+			opp-microvolt = <915000 915000 1000000>;
+			clock-latency-ns = <40000>;
+		};
+
+		opp-400000000 {
+			opp-hz = /bits/ 64 <400000000>;
+			opp-microvolt = <915000 915000 1000000>;
+			clock-latency-ns = <40000>;
+		};
+
+		opp-600000000 {
+			opp-hz = /bits/ 64 <600000000>;
+			opp-microvolt = <920000 920000 1000000>;
+			clock-latency-ns = <40000>;
+		};
+
+		opp-700000000 {
+			opp-hz = /bits/ 64 <700000000>;
+			opp-microvolt = <950000 950000 1000000>;
+			clock-latency-ns = <40000>;
+		};
+
+		opp-800000000 {
+			opp-hz = /bits/ 64 <800000000>;
+			opp-microvolt = <1000000 1000000 1000000>;
+			clock-latency-ns = <40000>;
+		};
+	};
+};
+
+&gpu {
+	clocks = <&scmi_clk 1>, <&cru CLK_GPU>;
+	clock-names = "core", "bus";
+	interrupt-names = "gpu", "mmu", "job";
+	assigned-clocks = <&scmi_clk 1>;
+	assigned-clock-rates = <200000000>;
+	operating-points-v2 = <&gpu_panfrost_opp_table>;
+	/delete-property/ upthreshold;
+	/delete-property/ downdifferential;
+	status = "okay";
+};

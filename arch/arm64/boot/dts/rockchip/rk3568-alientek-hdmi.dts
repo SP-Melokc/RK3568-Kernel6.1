@@ -1,0 +1,27 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright (c) 2021 Rockchip Electronics Co., Ltd.
+ *
+ */
+
+/dts-v1/;
+
+#include "rk3568-alientek.dtsi"
+
+//HDMI屏幕--VP0
+&hdmi {
+	status = "okay";
+};
+
+&hdmi_in_vp0 {
+	status = "okay";
+};
+
+&route_hdmi {
+	connect = <&vp0_out_hdmi>;
+	status = "okay";
+};
+
+&hdmi_sound {
+	status = "okay";
+};

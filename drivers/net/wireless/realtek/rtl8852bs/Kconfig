@@ -1,0 +1,4 @@
+config RTL8852BS
+        tristate "Realtek 8852B SDIO WiFi"
+        help
+          Realtek 8852BS SDIO WiFi driver.
