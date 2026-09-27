@@ -112,6 +112,7 @@
 #include <trace/events/initcall.h>
 
 #include <kunit/test.h>
+#include <linux/melokc_log.h>
 
 static int kernel_init(void *);
 
@@ -957,6 +958,7 @@ asmlinkage __visible void __init __no_sanitize_address start_kernel(void)
 	 */
 	boot_cpu_init();
 	page_address_init();
+	melokc_pr("This kernel is built by Melokc!!!\n");
 	pr_notice("%s", linux_banner);
 	early_security_init();
 	setup_arch(&command_line);
