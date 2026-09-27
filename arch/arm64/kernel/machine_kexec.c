@@ -13,6 +13,7 @@
 #include <linux/page-flags.h>
 #include <linux/set_memory.h>
 #include <linux/smp.h>
+#include <linux/melokc_log.h>
 
 #include <asm/cacheflush.h>
 #include <asm/cpu_ops.h>
@@ -258,8 +259,12 @@ void machine_crash_shutdown(struct pt_regs *regs)
 {
 	local_irq_disable();
 
+	melokc_pr("before shutdown other cpus\n");
+
 	/* shutdown non-crashing cpus */
 	crash_smp_send_stop();
+
+	melokc_pr("shutdown other cpus\n");
 
 	/* for crashing cpu */
 	crash_save_cpu(regs, smp_processor_id());
