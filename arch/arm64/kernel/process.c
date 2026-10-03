@@ -15,6 +15,7 @@
 #include <linux/sched/task.h>
 #include <linux/sched/task_stack.h>
 #include <linux/kernel.h>
+#include <linux/melokc_log.h>
 #include <linux/mman.h>
 #include <linux/mm.h>
 #include <linux/nospec.h>
@@ -126,9 +127,11 @@ void machine_power_off(void)
  */
 void machine_restart(char *cmd)
 {
+	melokc_pr("machine_restart: enter\n");
 	/* Disable interrupts first */
 	local_irq_disable();
 	smp_send_stop();
+	melokc_pr("machine_restart: cpus stopped -> do_kernel_restart(PSCI)\n");
 
 	/*
 	 * UpdateCapsule() depends on the system being reset via
@@ -143,6 +146,7 @@ void machine_restart(char *cmd)
 	/*
 	 * Whoops - the architecture was unable to reboot.
 	 */
+	melokc_pr("machine_restart: do_kernel_restart RETURNED (failed), halting\n");
 	printk("Reboot failed -- System halted\n");
 	while (1);
 }

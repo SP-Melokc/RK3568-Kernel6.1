@@ -189,6 +189,7 @@ void machine_kexec(struct kimage *kimage)
 		"Some CPUs may be stale, kdump will be unreliable.\n");
 
 	pr_info("Bye!\n");
+	melokc_pr("machine_kexec: enter in_crash=%d start=%lx\n", in_kexec_crash, (unsigned long)kimage->start);
 
 	local_daif_mask();
 
@@ -206,6 +207,7 @@ void machine_kexec(struct kimage *kimage)
 
 		cpu_install_idmap();
 		restart = (void *)__pa_symbol(cpu_soft_restart);
+		melokc_pr("machine_kexec: -> cpu_soft_restart NOW\n");
 		restart(is_hyp_nvhe(), kimage->start, kimage->arch.dtb_mem,
 			0, 0);
 	} else {
@@ -215,6 +217,7 @@ void machine_kexec(struct kimage *kimage)
 			__hyp_set_vectors(kimage->arch.el2_vectors);
 		cpu_install_ttbr0(kimage->arch.ttbr0, kimage->arch.t0sz);
 		kernel_reloc = (void *)kimage->arch.kern_reloc;
+		melokc_pr("machine_kexec: -> kernel_reloc NOW\n");
 		kernel_reloc(kimage);
 	}
 

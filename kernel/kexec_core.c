@@ -17,6 +17,7 @@
 #include <linux/highmem.h>
 #include <linux/syscalls.h>
 #include <linux/reboot.h>
+#include <linux/melokc_log.h>
 #include <linux/ioport.h>
 #include <linux/hardirq.h>
 #include <linux/elf.h>
@@ -971,9 +972,11 @@ void __noclone __crash_kexec(struct pt_regs *regs)
 		if (kexec_crash_image) {
 			struct pt_regs fixed_regs;
 
+			melokc_pr("__crash_kexec: crash image FOUND, start crash shutdown\n");
 			crash_setup_regs(&fixed_regs, regs);
 			crash_save_vmcoreinfo();
 			machine_crash_shutdown(&fixed_regs);
+			melokc_pr("__crash_kexec: shutdown done -> machine_kexec (LAST STEP)\n");
 			machine_kexec(kexec_crash_image);
 		}
 		kexec_unlock();

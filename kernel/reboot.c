@@ -18,6 +18,7 @@
 #include <linux/syscalls.h>
 #include <linux/syscore_ops.h>
 #include <linux/uaccess.h>
+#include <linux/melokc_log.h>
 
 /*
  * this indicates whether you can reboot with ctrl-alt-del: the default is yes
@@ -73,6 +74,7 @@ void __weak (*pm_power_off)(void);
  */
 void emergency_restart(void)
 {
+	melokc_pr("emergency_restart: enter -> machine_emergency_restart\n");
 	kmsg_dump(KMSG_DUMP_EMERG);
 	system_state = SYSTEM_RESTART;
 	machine_emergency_restart();

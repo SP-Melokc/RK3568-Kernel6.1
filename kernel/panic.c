@@ -21,6 +21,7 @@
 #include <linux/random.h>
 #include <linux/ftrace.h>
 #include <linux/reboot.h>
+#include <linux/melokc_log.h>
 #include <linux/delay.h>
 #include <linux/kexec.h>
 #include <linux/panic_notifier.h>
@@ -354,8 +355,10 @@ void panic(const char *fmt, ...)
 	 *
 	 * Bypass the panic_cpu check and call __crash_kexec directly.
 	 */
-	if (!_crash_kexec_post_notifiers)
+	if (!_crash_kexec_post_notifiers) {
+		melokc_pr("panic: -> __crash_kexec (pre-notifiers)\n");
 		__crash_kexec(NULL);
+	}
 
 	panic_other_cpus_shutdown(_crash_kexec_post_notifiers);
 
@@ -378,8 +381,10 @@ void panic(const char *fmt, ...)
 	 *
 	 * Bypass the panic_cpu check and call __crash_kexec directly.
 	 */
-	if (_crash_kexec_post_notifiers)
+	if (_crash_kexec_post_notifiers) {
+		melokc_pr("panic: -> __crash_kexec (post-notifiers)\n");
 		__crash_kexec(NULL);
+	}
 
 	console_unblank();
 
@@ -421,6 +426,7 @@ void panic(const char *fmt, ...)
 		 * shutting down.  But if there is a chance of
 		 * rebooting the system it will be rebooted.
 		 */
+		melokc_pr("panic: -> emergency_restart (kexec jump did NOT happen)\n");
 		if (panic_reboot_mode != REBOOT_UNDEFINED)
 			reboot_mode = panic_reboot_mode;
 		emergency_restart();
