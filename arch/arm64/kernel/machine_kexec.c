@@ -224,7 +224,7 @@ void machine_kexec(struct kimage *kimage)
 	BUG(); /* Should never get here. */
 }
 
-static void machine_kexec_mask_interrupts(void)
+static void __maybe_unused machine_kexec_mask_interrupts(void)
 {
 	unsigned int i;
 	struct irq_desc *desc;
@@ -271,7 +271,7 @@ void machine_crash_shutdown(struct pt_regs *regs)
 
 	/* for crashing cpu */
 	crash_save_cpu(regs, smp_processor_id());
-	machine_kexec_mask_interrupts();
+	/* machine_kexec_mask_interrupts(); */ /* DISABLED(melokc): kdump hang - walks all irq_desc with IRQs off; I2C-attached irqchips wait forever for completion IRQ */
 
 	pr_info("Starting crashdump kernel...\n");
 }
