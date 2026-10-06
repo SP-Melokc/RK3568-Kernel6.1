@@ -844,8 +844,7 @@ static int rockchip_usb2phy_init(struct phy *phy)
 				&rport->port_cfg->pipe_phystatus, true);
 
 	if (rport->port_id == USB2PHY_PORT_OTG &&
-	    (rport->mode == USB_DR_MODE_PERIPHERAL ||
-	     rport->mode == USB_DR_MODE_OTG)) {
+	    rport->mode == USB_DR_MODE_OTG) {
 		/* clear id status and enable id detect irq */
 		if (rport->id_irq > 0 || rport->otg_mux_irq > 0 ||
 		    rphy->irq > 0) {
@@ -2383,7 +2382,8 @@ static int rockchip_usb2phy_otg_port_init(struct rockchip_usb2phy *rphy,
 		extcon_set_state(rphy->edev, EXTCON_USB, true);
 
 	if (rport->vbus_always_on || rport->mode == USB_DR_MODE_HOST ||
-	    rport->mode == USB_DR_MODE_UNKNOWN)
+	    rport->mode == USB_DR_MODE_UNKNOWN ||
+	    rport->mode == USB_DR_MODE_PERIPHERAL)
 		goto out;
 
 	wake_lock_init(&rport->wakelock, WAKE_LOCK_SUSPEND, "rockchip_otg");
